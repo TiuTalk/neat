@@ -1,4 +1,4 @@
-require "neat/version"
+require 'neat/version'
 
 module Neat
   class Error < StandardError; end
