@@ -12,7 +12,7 @@ module Neat
     end
 
     TYPES.each do |type|
-      define_method(:"#{type}?") { @type === type }
+      define_method(:"#{type}?") { @type == type }
     end
 
     def to_s
