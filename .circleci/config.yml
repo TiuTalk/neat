@@ -1,0 +1,22 @@
+version: 2.1
+
+orbs:
+  ruby: circleci/ruby@1.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.0
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+    steps:
+      - checkout
+      - ruby/install-deps
+      - ruby/rspec-test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
