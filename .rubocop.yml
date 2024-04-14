@@ -12,3 +12,9 @@ Style/Documentation:
 
 RSpec/NotToNot:
   EnforcedStyle: to_not
+
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/MultipleExpectations:
+  Max: 5
