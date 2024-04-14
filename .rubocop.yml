@@ -6,3 +6,9 @@ require:
 AllCops:
   TargetRubyVersion: 3.3
   NewCops: enable
+
+Style/Documentation:
+  Enabled: false
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
