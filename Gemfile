@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rspec'
+gem 'rspec_junit_formatter'
 
 gem 'rubocop'
 %i[rspec performance thread_safety].each do |extension|
