@@ -40,6 +40,10 @@ RSpec.describe Neat::Connection do
       it { is_expected.to eq(other) }
       it { is_expected.to eql(other) }
       it { is_expected.to_not equal(other) }
+
+      it 'has the same hash' do
+        expect(conn.hash).to eq(other.hash)
+      end
     end
 
     context 'with Connection between different Nodes' do
@@ -48,6 +52,10 @@ RSpec.describe Neat::Connection do
       it { is_expected.to_not eq(other) }
       it { is_expected.to_not eql(other) }
       it { is_expected.to_not equal(other) }
+
+      it 'does not have same hash' do
+        expect(conn.hash).to_not eq(other.hash)
+      end
     end
   end
 end

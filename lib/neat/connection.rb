@@ -34,6 +34,10 @@ module Neat
     end
     alias eql? ==
 
+    def hash
+      [from, to].hash
+    end
+
     private
 
     def random_weight

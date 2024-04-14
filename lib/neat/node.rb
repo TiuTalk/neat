@@ -22,6 +22,10 @@ module Neat
     end
     alias eql? ==
 
+    def hash
+      id.hash
+    end
+
     # NOTE: Define methods like input? output? bias? and hidden?
     TYPES.each do |type|
       define_method(:"#{type}?") { @type == type }

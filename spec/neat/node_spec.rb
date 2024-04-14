@@ -18,6 +18,10 @@ RSpec.describe Neat::Node do
       it { is_expected.to eq(other) }
       it { is_expected.to eql(other) }
       it { is_expected.to_not equal(other) }
+
+      it 'has the same hash' do
+        expect(node.hash).to eq(other.hash)
+      end
     end
 
     context 'with Node with different id' do
@@ -26,6 +30,10 @@ RSpec.describe Neat::Node do
       it { is_expected.to_not eq(other) }
       it { is_expected.to_not eql(other) }
       it { is_expected.to_not equal(other) }
+
+      it 'does not have same hash' do
+        expect(node.hash).to_not eq(other.hash)
+      end
     end
   end
 
