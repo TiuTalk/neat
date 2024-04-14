@@ -12,6 +12,9 @@ jobs:
       - checkout
       - ruby/install-deps:
           clean-bundle: true
+      - run:
+          name: Bundle Audit
+          command: bundle exec bundler-audit --update
       - ruby/rubocop-check
       - ruby/rspec-test:
           rerun-fail: false
