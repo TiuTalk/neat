@@ -5,4 +5,8 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rspec'
+
 gem 'rubocop'
+%i[rspec performance thread_safety].each do |extension|
+  gem "rubocop-#{extension}"
+end
