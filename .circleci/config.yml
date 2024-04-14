@@ -1,13 +1,13 @@
 version: 2.1
 
 orbs:
-  ruby: circleci/ruby@2.1.0
+  ruby: circleci/ruby@2.1.1
 
 jobs:
   build:
     resource_class: small
     docker:
-      - image: cimg/ruby:3.2.2
+      - image: cimg/ruby:3.3.0
     steps:
       - checkout
       - ruby/install-deps:
