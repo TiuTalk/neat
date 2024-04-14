@@ -4,5 +4,5 @@ require:
   - rubocop-thread_safety
 
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.3
   NewCops: enable
