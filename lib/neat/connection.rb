@@ -17,6 +17,14 @@ module Neat
       @enabled = enabled
     end
 
+    def enabled?
+      @enabled == true
+    end
+
+    def disabled?
+      @enabled == false
+    end
+
     def to_s
       "Connection##{id} (#{from.id} -> #{to.id})"
     end

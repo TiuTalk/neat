@@ -15,6 +15,18 @@ RSpec.describe Neat::Connection do
     end
   end
 
+  describe '#enabled?' do
+    it { is_expected.to be_enabled }
+    it { is_expected.to_not be_disabled }
+  end
+
+  describe '#disabled?' do
+    subject(:conn) { described_class.new(id: 1, from:, to:, enabled: false) }
+
+    it { is_expected.to be_disabled }
+    it { is_expected.to_not be_enabled }
+  end
+
   describe '#to_s' do
     subject { conn.to_s }
 
