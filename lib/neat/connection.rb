@@ -29,7 +29,7 @@ module Neat
     private
 
     def random_weight
-      rand(-2.0..2.0)
+      rand(::Neat.config.connection_weight_range)
     end
   end
 end

@@ -6,7 +6,14 @@ RSpec.describe Neat::Connection do
   let(:from) { Neat::Node.new(id: 1) }
   let(:to) { Neat::Node.new(id: 2) }
 
-  it { is_expected.to have_attributes(id: 1, from:, to:, weight: be_between(-2.0, 2.0), enabled: true) }
+  it { is_expected.to have_attributes(id: 1, from:, to:, weight: be_a(Float), enabled: true) }
+
+  describe '#weight' do
+    it 'is within the weight range' do
+      range = Neat.config.connection_weight_range
+      expect(range).to cover(conn.weight)
+    end
+  end
 
   describe '#to_s' do
     subject { conn.to_s }

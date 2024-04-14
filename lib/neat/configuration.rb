@@ -9,5 +9,8 @@ module Neat
         instance_variable_defined?(:"@#{name}") ? instance_variable_get(:"@#{name}") : default
       end
     end
+
+    # Network parameters
+    config :connection_weight_range, (-2.0..2.0)
   end
 end
