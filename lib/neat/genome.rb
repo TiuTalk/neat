@@ -7,9 +7,18 @@ module Neat
   class Genome
     attr_reader :nodes, :connections
 
-    def initialize
+    def initialize(inputs:, outputs:, bias: true, connected: true)
       @nodes = Set.new
       @connections = Set.new
+
+      return unless connected
+
+      initialize_nodes(inputs:, outputs:, bias:)
+      initialize_connections
+    end
+
+    Node::TYPES.each do |type|
+      define_method(:"#{type}_nodes") { @nodes.select(&:"#{type}?") }
     end
 
     def add_node(**args)
@@ -33,6 +42,22 @@ module Neat
         conn
       else
         @connections.find { _1 == conn }
+      end
+    end
+
+    private
+
+    def initialize_nodes(inputs:, outputs:, bias:)
+      inputs.times { add_node(type: :input) }
+
+      add_node(type: :bias) if bias
+
+      outputs.times { add_node(type: :output) }
+    end
+
+    def initialize_connections
+      (input_nodes + bias_nodes).product(output_nodes).each do |from, to|
+        add_connection(from:, to:)
       end
     end
   end

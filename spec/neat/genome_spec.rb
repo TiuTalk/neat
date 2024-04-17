@@ -1,9 +1,41 @@
 # frozen_string_literal: true
 
 RSpec.describe Neat::Genome do
-  subject(:genome) { described_class.new }
+  subject(:genome) { described_class.new(inputs: 2, outputs: 1) }
 
   it { is_expected.to have_attributes(nodes: be_a(Set), connections: be_a(Set)) }
+
+  describe '#initialize' do
+    it 'initializes the genome nodes' do
+      expect(genome.nodes.count).to eq(2 + 1 + 1) # 2 inptus, 1 bias & 1 output
+      expect(genome.nodes).to all(be_a(Neat::Node))
+    end
+
+    it 'initializes the genome connections' do
+      expect(genome.connections.count).to eq(2 + 1) # (2 inptus + 1 bias) => 1 output
+      expect(genome.connections).to all(be_a(Neat::Connection))
+    end
+
+    context 'when not connected' do
+      subject(:genome) { described_class.new(inputs: 2, outputs: 1, connected: false) }
+
+      it 'does not initialize the genome' do
+        expect(genome.nodes).to be_empty
+        expect(genome.connections).to be_empty
+      end
+    end
+  end
+
+  Neat::Node::TYPES.each do |type|
+    describe "##{type}_nodes" do
+      subject(:nodes) { genome.send(:"#{type}_nodes") }
+
+      it "returns the genome #{type} nodes" do
+        expect(nodes).to all(be_a(Neat::Node))
+        expect(nodes).to all(have_attributes(type:))
+      end
+    end
+  end
 
   describe '#add_node' do
     context 'with new Node' do
@@ -12,10 +44,10 @@ RSpec.describe Neat::Genome do
           expect(genome.add_node).to be_truthy
         end.to change(genome, :nodes)
 
-        node = genome.nodes.first
+        node = genome.nodes.to_a.last
 
         expect(node).to be_a(Neat::Node)
-        expect(node).to have_attributes(id: 1, type: :hidden)
+        expect(node).to have_attributes(id: 5, type: :hidden)
       end
     end
 
@@ -45,10 +77,10 @@ RSpec.describe Neat::Genome do
           expect(genome.add_connection(from:, to:)).to be_truthy
         end.to change(genome, :connections)
 
-        connection = genome.connections.first
+        connection = genome.connections.to_a.last
 
         expect(connection).to be_a(Neat::Connection)
-        expect(connection).to have_attributes(id: 1, from:, to:)
+        expect(connection).to have_attributes(id: 4, from:, to:)
       end
     end
 
