@@ -52,7 +52,7 @@ RSpec.describe Neat::Genome do
     end
 
     context 'with existing Node' do
-      let!(:existing_node) { genome.add_node(id: 1) }
+      let!(:existing_node) { genome.input_nodes.first }
 
       it 'does not change the nodes' do
         expect { genome.add_node(id: 1) }.to_not change(genome, :nodes)
@@ -68,10 +68,10 @@ RSpec.describe Neat::Genome do
   end
 
   describe '#add_connection' do
-    let(:from) { genome.add_node }
-    let(:to) { genome.add_node }
-
     context 'with new Connection' do
+      let(:from) { genome.input_nodes.first }
+      let(:to) { genome.add_node }
+
       it 'adds the Connection' do
         expect do
           expect(genome.add_connection(from:, to:)).to be_truthy
@@ -85,7 +85,10 @@ RSpec.describe Neat::Genome do
     end
 
     context 'with existing Connection' do
-      let!(:existing_connection) { genome.add_connection(from:, to:) }
+      let!(:existing_connection) { genome.connections.first }
+
+      let(:from) { existing_connection.from }
+      let(:to) { existing_connection.to }
 
       it 'does not change the connections' do
         expect { genome.add_connection(from:, to:) }.to_not change(genome, :connections)

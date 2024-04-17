@@ -22,6 +22,7 @@ module Neat
     end
 
     def add_node(**args)
+      # TODO: Remove this
       args[:id] ||= @nodes.count + 1
 
       node = Node.new(**args)
@@ -34,6 +35,7 @@ module Neat
     end
 
     def add_connection(**args)
+      # TODO: Remove this
       args[:id] ||= @connections.count + 1
 
       conn = Connection.new(**args)
@@ -48,16 +50,16 @@ module Neat
     private
 
     def initialize_nodes(inputs:, outputs:, bias:)
-      inputs.times { add_node(type: :input) }
+      inputs.times { add_node(id: @nodes.count + 1, type: :input) }
 
-      add_node(type: :bias) if bias
+      add_node(id: @nodes.count + 1, type: :bias) if bias
 
-      outputs.times { add_node(type: :output) }
+      outputs.times { add_node(id: @nodes.count + 1, type: :output) }
     end
 
     def initialize_connections
       (input_nodes + bias_nodes).product(output_nodes).each do |from, to|
-        add_connection(from:, to:)
+        add_connection(id: @connections.count + 1, from:, to:)
       end
     end
   end
