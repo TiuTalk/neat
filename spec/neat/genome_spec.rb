@@ -37,6 +37,24 @@ RSpec.describe Neat::Genome do
     end
   end
 
+  describe '#connections_from' do
+    it 'returns the connections from the node' do
+      node = genome.input_nodes.first
+
+      expect(genome.connections_from(node)).to all(be_a(Neat::Connection))
+      expect(genome.connections_from(node)).to all(have_attributes(from: node))
+    end
+  end
+
+  describe '#connections_to' do
+    it 'returns the connections to the node' do
+      node = genome.output_nodes.first
+
+      expect(genome.connections_to(node)).to all(be_a(Neat::Connection))
+      expect(genome.connections_to(node)).to all(have_attributes(to: node))
+    end
+  end
+
   describe '#add_node' do
     context 'with new Node' do
       it 'adds the Node' do

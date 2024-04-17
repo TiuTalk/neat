@@ -21,6 +21,9 @@ module Neat
       define_method(:"#{type}_nodes") { @nodes.select(&:"#{type}?") }
     end
 
+    def connections_from(node) = @connections.select { _1.from == node }
+    def connections_to(node) = @connections.select { _1.to == node }
+
     def add_node(**args)
       # TODO: Remove this
       args[:id] ||= @nodes.count + 1
