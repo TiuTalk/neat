@@ -12,5 +12,8 @@ module Neat
 
     # Network parameters
     config :connection_weight_range, (-2.0..2.0)
+
+    # Activation function
+    config :activation_function, ->(value) { 1.0 / (1.0 + Math.exp(-value)) }
   end
 end

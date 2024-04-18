@@ -2,6 +2,7 @@
 
 require_relative 'neat/configuration'
 require_relative 'neat/genome'
+require_relative 'neat/evaluator'
 require_relative 'neat/version'
 
 module Neat
