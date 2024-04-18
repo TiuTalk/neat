@@ -4,6 +4,8 @@ RSpec.describe Neat::Evaluator do
   subject(:evaluator) { described_class.new(genome) }
 
   let(:genome) { Neat::Genome.new(inputs: 2, outputs: 1) }
+  let(:inputs) { Array.new(2) { rand(-10.0..10.0) } }
+  let(:activation_function) { Neat.config.activation_function }
 
   before do
     genome.connections.each { _1.weight = 0.5 }
@@ -14,21 +16,29 @@ RSpec.describe Neat::Evaluator do
       evaluator = instance_double(described_class)
 
       allow(described_class).to receive(:new).with(genome).and_return(evaluator)
-      expect(evaluator).to receive(:call).with([0.1, 0.2])
+      expect(evaluator).to receive(:call).with(inputs)
 
-      described_class.call(genome, [0.1, 0.2])
+      described_class.call(genome, inputs)
     end
   end
 
   describe '#call' do
+    subject(:outputs) { evaluator.call(inputs) }
+
     it 'evaluates the genome' do
-      outputs = evaluator.call([0.1, 0.2])
+      expected = activation_function.call((0.5 * inputs[0]) + (0.5 * inputs[1]) + (0.5 * 1.0))
 
-      expect(outputs.size).to eq(1)
-      expect(outputs).to all(be_a(Float))
+      expect(outputs).to eq([expected])
+    end
 
-      # TODO: Verify the output value
-      expect(outputs[0]).to eq(0.6570104626734988)
+    context 'with disabled connections' do
+      before { genome.connections.first.enabled = false }
+
+      it 'ignores disabled connections' do
+        expected = activation_function.call((0.5 * inputs[1]) + (0.5 * 1.0))
+
+        expect(outputs).to eq([expected])
+      end
     end
   end
 end

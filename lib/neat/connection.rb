@@ -4,8 +4,8 @@ require_relative 'node'
 
 module Neat
   class Connection
-    attr_reader :id, :from, :to, :enabled
-    attr_accessor :weight
+    attr_reader :id, :from, :to
+    attr_accessor :weight, :enabled
 
     def initialize(id:, from:, to:, weight: nil, enabled: true)
       raise ArgumentError, 'from must be a Node' unless from.is_a?(Node)
