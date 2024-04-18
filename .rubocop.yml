@@ -13,6 +13,9 @@ Style/Documentation:
 RSpec/NotToNot:
   EnforcedStyle: to_not
 
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
 RSpec/ExampleLength:
   Max: 10
 
