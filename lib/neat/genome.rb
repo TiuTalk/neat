@@ -3,6 +3,7 @@
 require_relative 'node'
 require_relative 'connection'
 require_relative 'evaluator'
+require_relative 'mutator'
 
 module Neat
   class Genome
@@ -53,6 +54,10 @@ module Neat
 
     def evaluate(inputs)
       Evaluator.new(self).call(inputs)
+    end
+
+    def mutate
+      Mutator.new(self).call
     end
 
     private

@@ -138,4 +138,15 @@ RSpec.describe Neat::Genome do
       genome.evaluate([1, 2])
     end
   end
+
+  describe '#mutate' do
+    let(:mutator) { instance_double(Neat::Mutator) }
+
+    it 'calls the Mutator' do
+      allow(Neat::Mutator).to receive(:new).with(genome).and_return(mutator)
+      expect(mutator).to receive(:call)
+
+      genome.mutate
+    end
+  end
 end
