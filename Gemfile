@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'pry'
+
 gem 'bundler-audit'
 
 gem 'rspec'
