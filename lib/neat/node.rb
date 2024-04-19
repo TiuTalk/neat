@@ -5,16 +5,18 @@ module Neat
     TYPES = %i[input output bias hidden].freeze
 
     attr_reader :id, :type
+    attr_accessor :layer
 
-    def initialize(id:, type: :hidden)
+    def initialize(id:, type: :hidden, layer: nil)
       raise ArgumentError, "Invalid type: #{type}" unless TYPES.include?(type)
 
       @id = id
       @type = type
+      @layer = layer
     end
 
     def to_s
-      "Node##{id} (#{type})"
+      "Node##{id} (#{type}, L#{layer})"
     end
 
     def ==(other)

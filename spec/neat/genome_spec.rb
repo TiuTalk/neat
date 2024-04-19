@@ -8,7 +8,14 @@ RSpec.describe Neat::Genome do
   describe '#initialize' do
     it 'initializes the genome nodes' do
       expect(genome.nodes.count).to eq(2 + 1 + 1) # 2 inptus, 1 bias & 1 output
-      expect(genome.nodes).to all(be_a(Neat::Node))
+
+      # Check the nodes types count
+      expect(genome.nodes.map(&:type).tally).to eq(input: 2, bias: 1, output: 1)
+
+      # Check the nodes types and layers
+      expect(genome.input_nodes).to all(have_attributes(type: :input, layer: 1))
+      expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
+      expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 2))
     end
 
     it 'initializes the genome connections' do

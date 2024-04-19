@@ -58,11 +58,11 @@ module Neat
     private
 
     def initialize_nodes(inputs:, outputs:, bias:)
-      inputs.times { add_node(id: @nodes.count + 1, type: :input) }
+      inputs.times { add_node(id: @nodes.count + 1, type: :input, layer: 1) }
 
-      add_node(id: @nodes.count + 1, type: :bias) if bias
+      add_node(id: @nodes.count + 1, type: :bias, layer: 1) if bias
 
-      outputs.times { add_node(id: @nodes.count + 1, type: :output) }
+      outputs.times { add_node(id: @nodes.count + 1, type: :output, layer: 2) }
     end
 
     def initialize_connections

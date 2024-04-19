@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Neat::Node do
-  subject(:node) { described_class.new(id: 1) }
+  subject(:node) { described_class.new(id: 1, layer: 2) }
 
-  it { is_expected.to have_attributes(id: 1, type: :hidden) }
+  it { is_expected.to have_attributes(id: 1, type: :hidden, layer: 2) }
 
   describe '#to_s' do
     subject { node.to_s }
 
-    it { is_expected.to eq("Node##{node.id} (#{node.type})") }
+    it { is_expected.to eq("Node##{node.id} (#{node.type}, L#{node.layer})") }
   end
 
   describe '#==' do
