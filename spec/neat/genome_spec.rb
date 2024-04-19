@@ -128,6 +128,18 @@ RSpec.describe Neat::Genome do
     end
   end
 
+  describe '#recalculate_layers' do
+    before { genome.nodes.each { |node| node.layer = nil } }
+
+    it 'recalculates the nodes layers' do
+      genome.recalculate_layers
+
+      expect(genome.input_nodes).to all(have_attributes(type: :input, layer: 1))
+      expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
+      expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 2))
+    end
+  end
+
   describe '#evaluate' do
     let(:evaluator) { instance_double(Neat::Evaluator) }
 

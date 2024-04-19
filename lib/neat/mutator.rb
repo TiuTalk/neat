@@ -27,7 +27,8 @@ module Neat
       # Disable the old connection
       conn.enabled = false
 
-      # TODO: Update the nodes layers
+      # Recalculate the layers
+      @genome.recalculate_layers
 
       node
     end

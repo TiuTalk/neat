@@ -50,11 +50,12 @@ RSpec.describe Neat::Mutator do
       end.to change { genome.connections.count(&:disabled?) }.by(1)
     end
 
-    it 'updates the nodes layers', pending: 'Not implemented yet' do
+    it 'updates the nodes layers' do
       mutator.add_node
+
       expect(genome.input_nodes).to all(have_attributes(type: :input, layer: 1))
       expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
-      expect(genome.hidden_nodes).to all(have_attributes(type: :bias, layer: 2))
+      expect(genome.hidden_nodes).to all(have_attributes(type: :hidden, layer: 2))
       expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 3))
     end
   end
