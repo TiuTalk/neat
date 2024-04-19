@@ -120,4 +120,15 @@ RSpec.describe Neat::Genome do
       end
     end
   end
+
+  describe '#evaluate' do
+    let(:evaluator) { instance_double(Neat::Evaluator) }
+
+    it 'calls the Evaluator' do
+      allow(Neat::Evaluator).to receive(:new).with(genome).and_return(evaluator)
+      expect(evaluator).to receive(:call).with([1, 2])
+
+      genome.evaluate([1, 2])
+    end
+  end
 end

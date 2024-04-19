@@ -2,6 +2,7 @@
 
 require_relative 'node'
 require_relative 'connection'
+require_relative 'evaluator'
 
 module Neat
   class Genome
@@ -48,6 +49,10 @@ module Neat
       else
         @connections.find { _1 == conn }
       end
+    end
+
+    def evaluate(inputs)
+      Evaluator.new(self).call(inputs)
     end
 
     private
