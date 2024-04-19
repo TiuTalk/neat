@@ -2,7 +2,7 @@
 
 module Neat
   class Mutator
-    MUTATION_METHODS = %i[add_node].freeze
+    MUTATION_METHODS = %i[add_node add_connection].freeze
 
     def initialize(genome)
       @genome = genome
@@ -13,7 +13,11 @@ module Neat
     end
 
     def call
-      MUTATION_METHODS.each { send(_1) }
+      MUTATION_METHODS.each do |mutation|
+        probability = Neat.config.send(:"mutation_#{mutation}_probability")
+
+        send(mutation) if rand < probability
+      end
     end
 
     def add_node
@@ -31,6 +35,29 @@ module Neat
       @genome.recalculate_layers
 
       node
+    end
+
+    def add_connection
+      Neat.config.mutation_add_connection_tries.times do
+        from, to = @genome.nodes.to_a.sample(2).sort_by(&:layer)
+
+        # Skip nodes that cannot be connected
+        next if from.output? || to.input? || to.bias?
+
+        # Skip if the connection already exists
+        next if @genome.connected?(from:, to:)
+
+        # TODO: Check layers?
+        # next if from.layer == to.layer
+
+        # Create new connection
+        @genome.add_connection(from:, to:)
+
+        # Recalculate the layers
+        @genome.recalculate_layers
+
+        break
+      end
     end
   end
 end

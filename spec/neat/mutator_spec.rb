@@ -17,6 +17,14 @@ RSpec.describe Neat::Mutator do
   end
 
   describe '#call' do
+    before do
+      # Force each mutation probability to 1.0
+      described_class::MUTATION_METHODS.each do |method|
+        config_name = :"mutation_#{method}_probability"
+        allow(Neat.config).to receive(config_name).and_return(1.0)
+      end
+    end
+
     it 'runs all the mutation methods' do
       described_class::MUTATION_METHODS.each do |method|
         expect(mutator).to receive(method).ordered
@@ -27,18 +35,20 @@ RSpec.describe Neat::Mutator do
   end
 
   describe '#add_node' do
+    subject(:mutation) { mutator.add_node }
+
     let(:node) { genome.nodes.to_a.last }
     let(:connections) { genome.connections.to_a.last(2) }
 
     it 'adds a new hidden node to the genome' do
-      expect { mutator.add_node }.to change(genome.nodes, :size).by(1)
+      expect { mutation }.to change(genome.nodes, :size).by(1)
 
       expect(node).to be_a(Neat::Node)
       expect(node).to have_attributes(id: genome.nodes.count, type: :hidden, layer: 2)
     end
 
     it 'adds two connections to the genome' do
-      expect { mutator.add_node }.to change(genome.connections, :size).by(2)
+      expect { mutation }.to change(genome.connections, :size).by(2)
 
       expect(connections[0]).to have_attributes(to: node, weight: 1.0)
       expect(connections[1]).to have_attributes(from: node)
@@ -46,17 +56,40 @@ RSpec.describe Neat::Mutator do
 
     it 'disables the old connection' do
       expect do
-        mutator.add_node
+        mutation
       end.to change { genome.connections.count(&:disabled?) }.by(1)
     end
 
-    it 'updates the nodes layers' do
-      mutator.add_node
+    it 'updates the genome layers' do
+      mutation
 
       expect(genome.input_nodes).to all(have_attributes(type: :input, layer: 1))
       expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
       expect(genome.hidden_nodes).to all(have_attributes(type: :hidden, layer: 2))
       expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 3))
+    end
+  end
+
+  describe '#add_connection' do
+    subject(:mutation) { mutator.add_connection }
+
+    before { allow(Neat.config).to receive(:mutation_add_connection_tries).and_return(50) }
+
+    context 'when connection is possible' do
+      before { mutator.add_node }
+
+      it 'adds a new connection to the genome' do
+        expect { mutation }.to change(genome.connections, :size).by(1)
+      end
+
+      it 'updates the genome layers' do
+        mutation
+
+        expect(genome.input_nodes).to all(have_attributes(type: :input, layer: 1))
+        expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
+        expect(genome.hidden_nodes).to all(have_attributes(type: :hidden, layer: 2))
+        expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 3))
+      end
     end
   end
 end
