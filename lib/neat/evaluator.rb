@@ -37,7 +37,7 @@ module Neat
     def evaluate_connection(connection)
       return 0 if connection.disabled?
 
-      evaluate_node(connection.from) * connection.weight
+      connection.weight * evaluate_node(connection.from)
     end
 
     def initialize_inputs(inputs)

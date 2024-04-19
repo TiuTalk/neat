@@ -26,7 +26,8 @@ RSpec.describe Neat::Evaluator do
     subject(:outputs) { evaluator.call(inputs) }
 
     it 'evaluates the genome' do
-      expected = activation_function.call((0.5 * inputs[0]) + (0.5 * inputs[1]) + (0.5 * 1.0))
+      values = [(0.5 * inputs[0]), (0.5 * inputs[1]), (0.5 * 1.0)]
+      expected = activation_function.call(values.sum)
 
       expect(outputs).to eq([expected])
     end
@@ -35,7 +36,8 @@ RSpec.describe Neat::Evaluator do
       before { genome.connections.first.enabled = false }
 
       it 'ignores disabled connections' do
-        expected = activation_function.call((0.5 * inputs[1]) + (0.5 * 1.0))
+        values = [(0.5 * inputs[1]), (0.5 * 1.0)]
+        expected = activation_function.call(values.sum)
 
         expect(outputs).to eq([expected])
       end
