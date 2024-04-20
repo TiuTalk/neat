@@ -2,7 +2,7 @@
 
 module Neat
   class Mutator
-    MUTATION_METHODS = %i[add_node add_connection].freeze
+    MUTATION_METHODS = %i[add_node add_connection mutate_weights].freeze
 
     def initialize(genome)
       @genome = genome
@@ -13,10 +13,12 @@ module Neat
     end
 
     def call
-      MUTATION_METHODS.each do |mutation|
-        probability = Neat.config.send(:"mutation_#{mutation}_probability")
-
-        send(mutation) if rand < probability
+      if rand < Neat.config.mutation_add_node_probability
+        add_node
+      elsif rand < Neat.config.mutation_add_connection_probability
+        add_connection
+      elsif rand < Neat.config.mutation_mutate_weights_probability
+        mutate_weights
       end
     end
 
@@ -42,7 +44,7 @@ module Neat
         from, to = @genome.nodes.to_a.sample(2).sort_by(&:layer)
 
         # Skip nodes that cannot be connected
-        next if from.output? || to.input? || to.bias?
+        next if from.output? || from.bias? || to.input? || to.bias?
 
         # Skip if the connection already exists
         next if @genome.connected?(from:, to:)
@@ -58,6 +60,27 @@ module Neat
 
         break
       end
+    end
+
+    def mutate_weights
+      @genome.connections.each do |conn|
+        if rand < Neat.config.mutation_randomize_weight_probability
+          randomize_weight(conn)
+        else
+          perturb_weight(conn)
+        end
+      end
+    end
+
+    private
+
+    def randomize_weight(conn)
+      conn.weight = rand(Neat.config.connection_weight_range)
+    end
+
+    def perturb_weight(conn)
+      conn.weight += rand(-0.1..0.1)
+      conn.weight = conn.weight.clamp(Neat.config.connection_weight_range)
     end
   end
 end
