@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe Neat::Genome do
-  subject(:genome) { described_class.new(inputs: 2, outputs: 1) }
+  subject(:genome) { neat.create_genome }
+
+  let(:neat) { Neat::Neat.new(inputs: 2, outputs: 1) }
 
   it { is_expected.to have_attributes(nodes: be_a(Set), connections: be_a(Set)) }
 
@@ -24,7 +26,7 @@ RSpec.describe Neat::Genome do
     end
 
     context 'when not connected' do
-      subject(:genome) { described_class.new(inputs: 2, outputs: 1, connected: false) }
+      subject(:genome) { neat.create_genome(connected: false) }
 
       it 'does not initialize the genome' do
         expect(genome.nodes).to be_empty

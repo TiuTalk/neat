@@ -3,7 +3,9 @@
 RSpec.describe Neat::Evaluator do
   subject(:evaluator) { described_class.new(genome) }
 
-  let(:genome) { Neat::Genome.new(inputs: 2, outputs: 1) }
+  let(:neat) { Neat::Neat.new(inputs: 2, outputs: 1) }
+  let(:genome) { neat.create_genome }
+
   let(:inputs) { Array.new(2) { rand(-10.0..10.0) } }
   let(:activation_function) { Neat.config.activation_function }
 

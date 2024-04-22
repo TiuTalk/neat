@@ -13,7 +13,7 @@ module Neat
     end
 
     def create_genome(connected: true)
-      Genome.new(inputs:, outputs:, bias:, connected:)
+      Genome.new(neat: self, connected:)
     end
   end
 end

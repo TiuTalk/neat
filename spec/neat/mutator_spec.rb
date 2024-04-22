@@ -3,7 +3,8 @@
 RSpec.describe Neat::Mutator do
   subject(:mutator) { described_class.new(genome) }
 
-  let(:genome) { Neat::Genome.new(inputs: 2, outputs: 1) }
+  let(:neat) { Neat::Neat.new(inputs: 2, outputs: 1) }
+  let(:genome) { neat.create_genome }
 
   describe '.call' do
     it 'creates a new instance and calls it' do

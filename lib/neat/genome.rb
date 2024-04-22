@@ -9,13 +9,14 @@ module Neat
   class Genome
     attr_reader :nodes, :connections
 
-    def initialize(inputs:, outputs:, bias: true, connected: true)
+    def initialize(neat:, connected: true)
+      @neat = neat
       @nodes = Set.new
       @connections = Set.new
 
       return unless connected
 
-      initialize_nodes(inputs:, outputs:, bias:)
+      initialize_nodes(inputs: neat.inputs, outputs: neat.outputs, bias: neat.bias)
       initialize_connections
     end
 
