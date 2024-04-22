@@ -2,8 +2,6 @@
 
 module Neat
   class Mutator
-    MUTATION_METHODS = %i[add_node add_connection mutate_weights].freeze
-
     def initialize(genome)
       @genome = genome
     end

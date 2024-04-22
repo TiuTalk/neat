@@ -5,10 +5,6 @@ RSpec.describe Neat::Mutator do
 
   let(:genome) { Neat::Genome.new(inputs: 2, outputs: 1) }
 
-  mutations = described_class::MUTATION_METHODS.map do |method|
-    [method, :"mutation_#{method}_probability"]
-  end
-
   describe '.call' do
     it 'creates a new instance and calls it' do
       mutator = instance_double(described_class)
@@ -21,23 +17,38 @@ RSpec.describe Neat::Mutator do
   end
 
   describe '#call' do
-    mutations.each do |method, config_name|
-      context "when #{config_name} is 100%" do
-        before { allow(Neat.config).to receive(config_name).and_return(1.0) }
+    before do
+      allow(Neat.config).to receive_messages({
+        mutation_add_node_probability: 0.0,
+        mutation_add_connection_probability: 0.0,
+        mutation_mutate_weights_probability: 0.0
+      })
+    end
 
-        it "calls #{method}" do
-          expect(mutator).to receive(method)
-          mutator.call
-        end
+    context 'when mutation_add_node_probability is 100%' do
+      before { allow(Neat.config).to receive(:mutation_add_node_probability).and_return(1.0) }
+
+      it 'calls #add_node' do
+        expect(mutator).to receive(:add_node)
+        mutator.call
       end
+    end
 
-      context 'when the probability is 0%' do
-        before { allow(Neat.config).to receive(config_name).and_return(0.0) }
+    context 'when mutation_add_connection_probability is 100%' do
+      before { allow(Neat.config).to receive(:mutation_add_connection_probability).and_return(1.0) }
 
-        it "does not call #{method}" do
-          expect(mutator).to_not receive(method)
-          mutator.call
-        end
+      it 'calls #add_connection' do
+        expect(mutator).to receive(:add_connection)
+        mutator.call
+      end
+    end
+
+    context 'when mutation_mutate_weights_probability is 100%' do
+      before { allow(Neat.config).to receive(:mutation_mutate_weights_probability).and_return(1.0) }
+
+      it 'calls #mutate_weights' do
+        expect(mutator).to receive(:mutate_weights)
+        mutator.call
       end
     end
   end
@@ -105,7 +116,7 @@ RSpec.describe Neat::Mutator do
       before { allow(Neat.config).to receive(:mutation_add_connection_tries).and_return(5) }
 
       it 'does not add a new connection to the genome' do
-        expect { mutation }.not_to change(genome.connections, :size)
+        expect { mutation }.to_not change(genome.connections, :size)
       end
     end
   end
@@ -115,9 +126,9 @@ RSpec.describe Neat::Mutator do
       before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(1.0) }
 
       it 'randomizes the weights of the connections' do
-        sum = genome.connections.map(&:weight).sum
-        expect { mutator.mutate_weights }.to change { genome.connections.map(&:weight) }
-        expect(genome.connections.map(&:weight).sum).not_to eq sum
+        sum = genome.connections.sum(&:weight)
+        expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
+        expect(genome.connections.sum(&:weight)).to_not eq sum
       end
     end
 
@@ -125,9 +136,9 @@ RSpec.describe Neat::Mutator do
       before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(0) }
 
       it 'perturbs the weights of the connections' do
-        sum = genome.connections.map(&:weight).sum
-        expect { mutator.mutate_weights }.to change { genome.connections.map(&:weight) }
-        expect(genome.connections.map(&:weight).sum).not_to eq sum
+        sum = genome.connections.sum(&:weight)
+        expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
+        expect(genome.connections.sum(&:weight)).to_not eq sum
       end
     end
   end
