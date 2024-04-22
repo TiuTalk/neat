@@ -60,11 +60,12 @@ module Neat
       reset_node_layers
 
       # Recalculate node layers
-      @nodes.each { _1.layer = node_depth(_1) + 1 }
+      nodes_to_recalculate = @nodes.reject(&:output?)
+      nodes_to_recalculate.each { _1.layer = node_depth(_1) + 1 }
 
-      # Group output nodes in the same layer
-      layer = output_nodes.map(&:layer).max
-      output_nodes.each { _1.layer = layer }
+      # Group output nodes in the last layer
+      output_layer = nodes_to_recalculate.map(&:layer).max + 1
+      output_nodes.each { _1.layer = output_layer }
     end
 
     def evaluate(inputs)
