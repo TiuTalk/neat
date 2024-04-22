@@ -16,7 +16,7 @@ module Neat
 
       return unless connected
 
-      initialize_nodes(inputs: neat.inputs, outputs: neat.outputs, bias: neat.bias)
+      initialize_nodes
       initialize_connections
     end
 
@@ -65,12 +65,12 @@ module Neat
 
     private
 
-    def initialize_nodes(inputs:, outputs:, bias:)
-      inputs.times { add_node(id: @nodes.count + 1, type: :input, layer: 1) }
+    def initialize_nodes
+      @neat.inputs.times { add_node(id: @nodes.count + 1, type: :input, layer: 1) }
 
-      add_node(id: @nodes.count + 1, type: :bias, layer: 1) if bias
+      add_node(id: @nodes.count + 1, type: :bias, layer: 1) if @neat.bias
 
-      outputs.times { add_node(id: @nodes.count + 1, type: :output, layer: 2) }
+      @neat.outputs.times { add_node(id: @nodes.count + 1, type: :output, layer: 2) }
     end
 
     def initialize_connections
