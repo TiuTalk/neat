@@ -23,7 +23,7 @@ module Neat
       if @nodes.add?(node)
         node
       else
-        @nodes.find { _1 == node }
+        @nodes.find { _1 == node }.clone
       end
     end
 

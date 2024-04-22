@@ -36,11 +36,11 @@ RSpec.describe Neat::Neat do
         expect { neat.add_node(id: existing_node.id) }.to_not change(neat, :nodes)
       end
 
-      it 'returns the existing Node object' do
+      it 'returns a new Node object' do
         node = neat.add_node(id: existing_node.id)
 
-        expect(node).to equal(existing_node)
-        expect(node.object_id).to eq(existing_node.object_id)
+        expect(node).to have_attributes(id: existing_node.id)
+        expect(node.object_id).to_not eq(existing_node.object_id)
       end
     end
   end
