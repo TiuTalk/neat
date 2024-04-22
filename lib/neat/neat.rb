@@ -35,8 +35,7 @@ module Neat
       if @connections.add?(conn)
         conn
       else
-        id = @connections.find { _1 == conn }.id
-        Connection.new(id:, **args.except(:id))
+        @connections.find { _1 == conn }.clone
       end
     end
 

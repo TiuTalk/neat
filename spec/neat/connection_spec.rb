@@ -58,4 +58,15 @@ RSpec.describe Neat::Connection do
       end
     end
   end
+
+  describe '#clone' do
+    subject(:clone) { conn.clone }
+
+    it 'returns a new Connection object' do
+      expect(clone).to be_a(described_class)
+      expect(clone).to have_attributes(id: conn.id, from:, to:)
+      expect(clone).to_not equal(conn)
+      expect(clone.object_id).to_not equal(conn.object_id)
+    end
+  end
 end

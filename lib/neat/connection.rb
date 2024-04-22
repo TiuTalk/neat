@@ -39,6 +39,10 @@ module Neat
       [from, to].hash
     end
 
+    def clone
+      Connection.new(id:, from:, to:)
+    end
+
     private
 
     def random_weight
