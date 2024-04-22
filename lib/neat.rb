@@ -11,7 +11,9 @@ module Neat
     @config ||= Configuration.new # rubocop:disable ThreadSafety/InstanceVariableInClassMethod
   end
 
+  # :nocov:
   def self.configure
     yield(config)
   end
+  # :nocov:
 end

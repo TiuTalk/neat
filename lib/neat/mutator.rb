@@ -11,11 +11,11 @@ module Neat
     end
 
     def call
-      if rand < ::Neat.config.mutation_add_node_probability
+      if rand < mutation_add_node_probability
         add_node
-      elsif rand < ::Neat.config.mutation_add_connection_probability
+      elsif rand < mutation_add_connection_probability
         add_connection
-      elsif rand < ::Neat.config.mutation_mutate_weights_probability
+      elsif rand < mutation_mutate_weights_probability
         mutate_weights
       end
     end
@@ -51,37 +51,35 @@ module Neat
 
     def mutate_weights
       @genome.connections.each do |conn|
-        if rand < ::Neat.config.mutation_randomize_weight_probability
-          randomize_weight(conn)
+        if rand < mutation_randomize_weight_probability
+          conn.randomize_weight
         else
-          perturb_weight(conn)
+          conn.perturb_weight
         end
       end
     end
 
     private
 
+    extend Forwardable
+    def_delegators :'Neat.config', :mutation_add_node_probability, :mutation_add_connection_probability,
+      :mutation_mutate_weights_probability, :mutation_randomize_weight_probability
+
     def connection_candidates
       @connection_candidates ||= begin
-        from_candidates = @genome.nodes.reject { _1.output? || _1.bias? }
-        to_candidates = @genome.nodes.reject { _1.input? || _1.bias? }
-
         # Skip if the nodes are the same, the from node is in a higher layer, or the connection already exists
-        from_candidates.product(to_candidates).reject do |from, to|
+        connection_from_candidates.product(connection_to_candidates).reject do |from, to|
           from == to || from.layer >= to.layer || @genome.connected?(from:, to:)
         end
       end
     end
 
-    def randomize_weight(conn)
-      conn.weight = rand(::Neat.config.connection_weight_range)
+    def connection_from_candidates
+      @genome.nodes.reject { _1.output? || _1.bias? }
     end
 
-    def perturb_weight(conn)
-      amount = conn.weight * rand(::Neat.config.mutation_perturb_weight_range)
-
-      conn.weight += amount
-      conn.weight = conn.weight.clamp(::Neat.config.connection_weight_range)
+    def connection_to_candidates
+      @genome.nodes.reject { _1.input? || _1.bias? }
     end
   end
 end

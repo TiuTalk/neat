@@ -21,9 +21,8 @@ module Neat
 
     private
 
-    def activation_function
-      @activation_function ||= ::Neat.config.activation_function
-    end
+    extend Forwardable
+    def_delegators :'Neat.config', :activation_function
 
     def evaluate_node(node)
       @outputs[node.id] ||= begin

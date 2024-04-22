@@ -69,4 +69,20 @@ RSpec.describe Neat::Connection do
       expect(clone.object_id).to_not equal(conn.object_id)
     end
   end
+
+  describe '#randomize_weight' do
+    subject(:randomize_weight) { conn.randomize_weight }
+
+    it 'changes the weight' do
+      expect { randomize_weight }.to change(conn, :weight)
+    end
+  end
+
+  describe '#perturb_weight' do
+    subject(:perturb_weight) { conn.perturb_weight }
+
+    it 'changes the weight' do
+      expect { perturb_weight }.to change(conn, :weight)
+    end
+  end
 end

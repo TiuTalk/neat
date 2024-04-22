@@ -42,11 +42,5 @@ module Neat
     def create_genome(connected: true)
       Genome.new(neat: self, connected:)
     end
-
-    private
-
-    def connection_key(from:, to:)
-      [from.id, to.id]
-    end
   end
 end

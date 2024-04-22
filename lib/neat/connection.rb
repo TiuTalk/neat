@@ -43,10 +43,25 @@ module Neat
       Connection.new(id:, from:, to:)
     end
 
+    def randomize_weight
+      @weight = random_weight
+    end
+
+    def perturb_weight
+      amount = weight * rand(mutation_perturb_weight_range)
+
+      @weight += amount
+      @weight = @weight.clamp(connection_weight_range)
+    end
+
     private
 
+    extend Forwardable
+    def_delegators :'Neat.config', :connection_weight_range, :mutation_perturb_weight_range,
+      :mutation_randomize_weight_probability
+
     def random_weight
-      rand(::Neat.config.connection_weight_range)
+      rand(connection_weight_range)
     end
   end
 end
