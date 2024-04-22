@@ -32,28 +32,14 @@ module Neat
     end
 
     def add_node(**args)
-      # TODO: Remove this
-      args[:id] ||= @nodes.count + 1
-
-      node = Node.new(**args)
-
-      if @nodes.add?(node)
-        node
-      else
-        @nodes.find { _1 == node }
+      @neat.add_node(**args).tap do |node|
+        @nodes.add(node)
       end
     end
 
     def add_connection(**args)
-      # TODO: Remove this
-      args[:id] ||= @connections.count + 1
-
-      conn = Connection.new(**args)
-
-      if @connections.add?(conn)
-        conn
-      else
-        @connections.find { _1 == conn }
+      @neat.add_connection(**args).tap do |conn|
+        @connections.add(conn)
       end
     end
 

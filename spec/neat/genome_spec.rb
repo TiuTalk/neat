@@ -65,68 +65,31 @@ RSpec.describe Neat::Genome do
   end
 
   describe '#add_node' do
-    context 'with new Node' do
-      it 'adds the Node' do
-        expect do
-          expect(genome.add_node).to be_truthy
-        end.to change(genome, :nodes)
+    it 'adds the Node' do
+      expect do
+        expect(genome.add_node).to be_truthy
+      end.to change(genome, :nodes)
 
-        node = genome.nodes.to_a.last
+      node = genome.nodes.to_a.last
 
-        expect(node).to be_a(Neat::Node)
-        expect(node).to have_attributes(id: 5, type: :hidden)
-      end
-    end
-
-    context 'with existing Node' do
-      let!(:existing_node) { genome.input_nodes.first }
-
-      it 'does not change the nodes' do
-        expect { genome.add_node(id: 1) }.to_not change(genome, :nodes)
-      end
-
-      it 'returns the existing Node' do
-        node = genome.add_node(id: 1)
-
-        expect(node).to equal(existing_node)
-        expect(node.object_id).to eq(existing_node.object_id)
-      end
+      expect(node).to be_a(Neat::Node)
+      expect(node).to have_attributes(id: 5, type: :hidden)
     end
   end
 
   describe '#add_connection' do
-    context 'with new Connection' do
-      let(:from) { genome.input_nodes.first }
-      let(:to) { genome.add_node }
+    let(:from) { genome.input_nodes.first }
+    let(:to) { genome.add_node }
 
-      it 'adds the Connection' do
-        expect do
-          expect(genome.add_connection(from:, to:)).to be_truthy
-        end.to change(genome, :connections)
+    it 'adds the Connection' do
+      expect do
+        expect(genome.add_connection(from:, to:)).to be_truthy
+      end.to change(genome, :connections)
 
-        connection = genome.connections.to_a.last
+      connection = genome.connections.to_a.last
 
-        expect(connection).to be_a(Neat::Connection)
-        expect(connection).to have_attributes(id: 4, from:, to:)
-      end
-    end
-
-    context 'with existing Connection' do
-      let!(:existing_connection) { genome.connections.first }
-
-      let(:from) { existing_connection.from }
-      let(:to) { existing_connection.to }
-
-      it 'does not change the connections' do
-        expect { genome.add_connection(from:, to:) }.to_not change(genome, :connections)
-      end
-
-      it 'returns the existing Connection' do
-        connection = genome.add_connection(from:, to:)
-
-        expect(connection).to equal(existing_connection)
-        expect(connection.object_id).to eq(existing_connection.object_id)
-      end
+      expect(connection).to be_a(Neat::Connection)
+      expect(connection).to have_attributes(id: 4, from:, to:)
     end
   end
 
