@@ -93,10 +93,7 @@ RSpec.describe Neat::Mutator do
     subject(:mutation) { mutator.add_connection }
 
     context 'when connection is possible' do
-      before do
-        mutator.add_node
-        allow(Neat.config).to receive(:mutation_add_connection_tries).and_return(50)
-      end
+      before { mutator.add_node }
 
       it 'adds a new connection to the genome' do
         expect { mutation }.to change(genome.connections, :size).by(1)
@@ -113,8 +110,6 @@ RSpec.describe Neat::Mutator do
     end
 
     context 'when connection is not possible' do
-      before { allow(Neat.config).to receive(:mutation_add_connection_tries).and_return(5) }
-
       it 'does not add a new connection to the genome' do
         expect { mutation }.to_not change(genome.connections, :size)
       end

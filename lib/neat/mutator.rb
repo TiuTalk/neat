@@ -38,26 +38,15 @@ module Neat
     end
 
     def add_connection
-      Neat.config.mutation_add_connection_tries.times do
-        from, to = @genome.nodes.to_a.sample(2).sort_by(&:layer)
+      return if connection_candidates.empty?
 
-        # Skip nodes that cannot be connected
-        next if from.output? || from.bias? || to.input? || to.bias?
+      from, to = connection_candidates.sample
 
-        # Skip if the connection already exists
-        next if @genome.connected?(from:, to:)
+      # Create new connection
+      @genome.add_connection(from:, to:)
 
-        # TODO: Check layers?
-        # next if from.layer == to.layer
-
-        # Create new connection
-        @genome.add_connection(from:, to:)
-
-        # Recalculate the layers
-        @genome.recalculate_layers
-
-        break
-      end
+      # Recalculate the layers
+      @genome.recalculate_layers
     end
 
     def mutate_weights
@@ -71,6 +60,18 @@ module Neat
     end
 
     private
+
+    def connection_candidates
+      @connection_candidates ||= begin
+        from_candidates = @genome.nodes.reject { _1.output? || _1.bias? }
+        to_candidates = @genome.nodes.reject { _1.input? || _1.bias? }
+
+        # Skip if the nodes are the same, the from node is in a higher layer, or the connection already exists
+        from_candidates.product(to_candidates).reject do |from, to|
+          from == to || from.layer >= to.layer || @genome.connected?(from:, to:)
+        end
+      end
+    end
 
     def randomize_weight(conn)
       conn.weight = rand(Neat.config.connection_weight_range)

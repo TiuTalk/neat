@@ -19,7 +19,6 @@ module Neat
     # Mutation parameters
     config :mutation_add_node_probability, 0.03
     config :mutation_add_connection_probability, 0.05
-    config :mutation_add_connection_tries, 10
     config :mutation_mutate_weights_probability, 0.8
     config :mutation_randomize_weight_probability, 0.1
   end
