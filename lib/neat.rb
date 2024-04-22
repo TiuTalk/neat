@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'neat/neat'
 require_relative 'neat/configuration'
-require_relative 'neat/genome'
 require_relative 'neat/version'
 
 module Neat

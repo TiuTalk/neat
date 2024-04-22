@@ -11,11 +11,11 @@ module Neat
     end
 
     def call
-      if rand < Neat.config.mutation_add_node_probability
+      if rand < ::Neat.config.mutation_add_node_probability
         add_node
-      elsif rand < Neat.config.mutation_add_connection_probability
+      elsif rand < ::Neat.config.mutation_add_connection_probability
         add_connection
-      elsif rand < Neat.config.mutation_mutate_weights_probability
+      elsif rand < ::Neat.config.mutation_mutate_weights_probability
         mutate_weights
       end
     end
@@ -51,7 +51,7 @@ module Neat
 
     def mutate_weights
       @genome.connections.each do |conn|
-        if rand < Neat.config.mutation_randomize_weight_probability
+        if rand < ::Neat.config.mutation_randomize_weight_probability
           randomize_weight(conn)
         else
           perturb_weight(conn)
@@ -74,14 +74,14 @@ module Neat
     end
 
     def randomize_weight(conn)
-      conn.weight = rand(Neat.config.connection_weight_range)
+      conn.weight = rand(::Neat.config.connection_weight_range)
     end
 
     def perturb_weight(conn)
-      amount = conn.weight * rand(Neat.config.mutation_perturb_weight_range)
+      amount = conn.weight * rand(::Neat.config.mutation_perturb_weight_range)
 
       conn.weight += amount
-      conn.weight = conn.weight.clamp(Neat.config.connection_weight_range)
+      conn.weight = conn.weight.clamp(::Neat.config.connection_weight_range)
     end
   end
 end

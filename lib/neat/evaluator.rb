@@ -22,7 +22,7 @@ module Neat
     private
 
     def activation_function
-      @activation_function ||= Neat.config.activation_function
+      @activation_function ||= ::Neat.config.activation_function
     end
 
     def evaluate_node(node)
