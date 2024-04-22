@@ -125,15 +125,36 @@ RSpec.describe Neat::Mutator do
         expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
         expect(genome.connections.sum(&:weight)).to_not eq sum
       end
+
+      it 'keeps the weights within the range' do
+        mutator.mutate_weights
+
+        genome.connections.each do |conn|
+          expect(conn.weight).to be_between(*Neat.config.connection_weight_range.minmax)
+        end
+      end
     end
 
     context 'when weights are perturbed' do
       before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(0) }
 
       it 'perturbs the weights of the connections' do
-        sum = genome.connections.sum(&:weight)
+        weights_before = genome.connections.map(&:weight)
+
         expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
-        expect(genome.connections.sum(&:weight)).to_not eq sum
+
+        genome.connections.each.with_index do |conn, i|
+          change = (conn.weight - weights_before[i]) / weights_before[i]
+          expect(change).to be_between(*Neat.config.mutation_perturb_weight_range.minmax)
+        end
+      end
+
+      it 'keeps the weights within the range' do
+        mutator.mutate_weights
+
+        genome.connections.each do |conn|
+          expect(conn.weight).to be_between(*Neat.config.connection_weight_range.minmax)
+        end
       end
     end
   end

@@ -78,7 +78,9 @@ module Neat
     end
 
     def perturb_weight(conn)
-      conn.weight += rand(-0.1..0.1)
+      amount = conn.weight * rand(Neat.config.mutation_perturb_weight_range)
+
+      conn.weight += amount
       conn.weight = conn.weight.clamp(Neat.config.connection_weight_range)
     end
   end

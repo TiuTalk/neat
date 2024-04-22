@@ -21,5 +21,6 @@ module Neat
     config :mutation_add_connection_probability, 0.05
     config :mutation_mutate_weights_probability, 0.8
     config :mutation_randomize_weight_probability, 0.1
+    config :mutation_perturb_weight_range, (-0.2..0.2)
   end
 end
