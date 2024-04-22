@@ -88,6 +88,14 @@ RSpec.describe Neat::Mutator do
       expect(genome.hidden_nodes).to all(have_attributes(type: :hidden, layer: 2))
       expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 3))
     end
+
+    context 'with other genomes' do
+      let!(:other) { neat.create_genome }
+
+      it 'does not affect other Genomes' do
+        expect { mutation }.to_not change(other, :nodes)
+      end
+    end
   end
 
   describe '#add_connection' do
@@ -115,20 +123,32 @@ RSpec.describe Neat::Mutator do
         expect { mutation }.to_not change(genome.connections, :size)
       end
     end
+
+    context 'with other genomes' do
+      let!(:other) { neat.create_genome }
+
+      before { mutator.add_node }
+
+      it 'does not affect other Genomes' do
+        expect { mutation }.to_not change(other, :connections)
+      end
+    end
   end
 
   describe '#mutate_weights' do
+    subject(:mutation) { mutator.mutate_weights }
+
     context 'when weights are randomized' do
       before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(1.0) }
 
       it 'randomizes the weights of the connections' do
         sum = genome.connections.sum(&:weight)
-        expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
+        expect { mutation }.to(change { genome.connections.map(&:weight) })
         expect(genome.connections.sum(&:weight)).to_not eq sum
       end
 
       it 'keeps the weights within the range' do
-        mutator.mutate_weights
+        mutation
 
         genome.connections.each do |conn|
           expect(conn.weight).to be_between(*Neat.config.connection_weight_range.minmax)
@@ -142,7 +162,7 @@ RSpec.describe Neat::Mutator do
       it 'perturbs the weights of the connections' do
         weights_before = genome.connections.map(&:weight)
 
-        expect { mutator.mutate_weights }.to(change { genome.connections.map(&:weight) })
+        expect { mutation }.to(change { genome.connections.map(&:weight) })
 
         genome.connections.each.with_index do |conn, i|
           change = (conn.weight - weights_before[i]) / weights_before[i]
@@ -151,11 +171,19 @@ RSpec.describe Neat::Mutator do
       end
 
       it 'keeps the weights within the range' do
-        mutator.mutate_weights
+        mutation
 
         genome.connections.each do |conn|
           expect(conn.weight).to be_between(*Neat.config.connection_weight_range.minmax)
         end
+      end
+    end
+
+    context 'with other genomes' do
+      let!(:other) { neat.create_genome }
+
+      it 'does not affect other Genomes' do
+        expect { mutation }.to_not(change { other.connections.map(&:weight) })
       end
     end
   end

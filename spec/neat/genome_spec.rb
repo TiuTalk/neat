@@ -103,6 +103,16 @@ RSpec.describe Neat::Genome do
       expect(genome.bias_nodes).to all(have_attributes(type: :bias, layer: 1))
       expect(genome.output_nodes).to all(have_attributes(type: :output, layer: 2))
     end
+
+    context 'with other genomes' do
+      let!(:other) { neat.create_genome }
+
+      it 'does not affect other Genomes' do
+        expect do
+          genome.recalculate_layers
+        end.to_not(change { other.nodes.map(&:layer) })
+      end
+    end
   end
 
   describe '#evaluate' do
