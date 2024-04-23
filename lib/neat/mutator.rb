@@ -66,11 +66,9 @@ module Neat
       :mutation_mutate_weights_probability, :mutation_randomize_weight_probability
 
     def connection_candidates
-      @connection_candidates ||= begin
-        # Skip if the nodes are the same, the from node is in a higher layer, or the connection already exists
-        connection_from_candidates.product(connection_to_candidates).reject do |from, to|
-          from == to || from.layer >= to.layer || @genome.connected?(from:, to:)
-        end
+      # Skip if the nodes are the same, the from node is in a higher layer, or the connection already exists
+      @connection_candidates ||= connection_from_candidates.product(connection_to_candidates).reject do |from, to|
+        from == to || from.layer >= to.layer || @genome.connected?(from:, to:)
       end
     end
 
