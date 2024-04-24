@@ -1,5 +1,7 @@
 # Neat
 
+[![CircleCI](https://img.shields.io/circleci/build/github/TiuTalk/neat?logo=circleci)](https://app.circleci.com/pipelines/github/TiuTalk/neat)
+
 TODO: Delete this and the text below, and describe your gem
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/neat`. To experiment with that code, run `bin/console` for an interactive prompt.
