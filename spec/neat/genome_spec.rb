@@ -126,6 +126,18 @@ RSpec.describe Neat::Genome do
     end
   end
 
+  describe '#distance' do
+    let(:distance) { instance_double(Neat::Distance) }
+    let(:other) { neat.create_genome }
+
+    it 'calls the Distance' do
+      allow(Neat::Distance).to receive(:new).with(genome, other).and_return(distance)
+      expect(distance).to receive(:call)
+
+      genome.distance(other)
+    end
+  end
+
   describe '#mutate' do
     let(:mutator) { instance_double(Neat::Mutator) }
 

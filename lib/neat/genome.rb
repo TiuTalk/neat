@@ -3,6 +3,7 @@
 require_relative 'node'
 require_relative 'connection'
 require_relative 'evaluator'
+require_relative 'distance'
 require_relative 'mutator'
 
 module Neat
@@ -57,6 +58,10 @@ module Neat
 
     def evaluate(inputs)
       Evaluator.new(self).call(inputs)
+    end
+
+    def distance(other)
+      Distance.new(self, other).call
     end
 
     def mutate

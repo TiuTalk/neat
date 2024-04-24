@@ -2,3 +2,5 @@
 detectors:
   IrresponsibleModule:
     enabled: false
+  BooleanParameter:
+    enabled: false
