@@ -3,6 +3,9 @@
 module Neat
   class Crossover
     def initialize(genome_a, genome_b)
+      raise ArgumentError, 'genome_a must be a Genome' unless genome_a.is_a?(Genome)
+      raise ArgumentError, 'genome_b must be a Genome' unless genome_b.is_a?(Genome)
+
       # TODO: Check fitness?
       @genome_a = genome_a
       @genome_b = genome_b

@@ -3,6 +3,8 @@
 module Neat
   class Evaluator
     def initialize(genome)
+      raise ArgumentError, 'genome must be a Genome' unless genome.is_a?(Genome)
+
       @genome = genome
     end
 
