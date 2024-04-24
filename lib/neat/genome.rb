@@ -4,21 +4,20 @@ require_relative 'node'
 require_relative 'connection'
 require_relative 'evaluator'
 require_relative 'distance'
+require_relative 'crossover'
 require_relative 'mutator'
 
 module Neat
   class Genome
-    attr_reader :nodes, :connections
+    attr_reader :neat, :nodes, :connections
 
     def initialize(neat:, connected: true)
       @neat = neat
       @nodes = Set.new
       @connections = Set.new
 
-      return unless connected
-
       initialize_nodes
-      initialize_connections
+      initialize_connections if connected
     end
 
     Node::TYPES.each do |type|
@@ -40,6 +39,9 @@ module Neat
 
     def add_connection(**args)
       @neat.add_connection(**args).tap do |conn|
+        # Force the connection weight if provided
+        conn.weight = args[:weight] if args[:weight]
+
         @connections.add(conn)
       end
     end
@@ -62,6 +64,10 @@ module Neat
 
     def distance(other)
       Distance.new(self, other).call
+    end
+
+    def crossover(other)
+      Crossover.new(self, other).call
     end
 
     def mutate

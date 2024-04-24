@@ -5,7 +5,7 @@ RSpec.describe Neat::Genome do
 
   let(:neat) { Neat::Neat.new(inputs: 2, outputs: 1) }
 
-  it { is_expected.to have_attributes(nodes: be_a(Set), connections: be_a(Set)) }
+  it { is_expected.to have_attributes(neat:, nodes: be_a(Set), connections: be_a(Set)) }
 
   describe '#initialize' do
     it 'initializes the genome nodes' do
@@ -28,8 +28,11 @@ RSpec.describe Neat::Genome do
     context 'when not connected' do
       subject(:genome) { neat.create_genome(connected: false) }
 
-      it 'does not initialize the genome' do
-        expect(genome.nodes).to be_empty
+      it 'initializes the nodes' do
+        expect(genome.nodes.count).to eq(2 + 1 + 1) # 2 inptus, 1 bias & 1 output
+      end
+
+      it 'does not initialize the connectinos' do
         expect(genome.connections).to be_empty
       end
     end
@@ -135,6 +138,18 @@ RSpec.describe Neat::Genome do
       expect(distance).to receive(:call)
 
       genome.distance(other)
+    end
+  end
+
+  describe '#crossover' do
+    let(:crossover) { instance_double(Neat::Crossover) }
+    let(:other) { neat.create_genome }
+
+    it 'calls the Crossover' do
+      allow(Neat::Crossover).to receive(:new).with(genome, other).and_return(crossover)
+      expect(crossover).to receive(:call)
+
+      genome.crossover(other)
     end
   end
 
