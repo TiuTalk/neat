@@ -7,19 +7,8 @@ RSpec.describe Neat::Distance do
   let(:genome_a) { neat.create_genome }
   let(:genome_b) { neat.create_genome }
 
-  describe '.call' do
-    it 'creates a new instance and calls it' do
-      distance = instance_double(described_class)
-
-      allow(described_class).to receive(:new).with(genome_a, genome_b).and_return(distance)
-      expect(distance).to receive(:call)
-
-      described_class.call(genome_a, genome_b)
-    end
-  end
-
-  describe '#call' do
-    subject { distance.call }
+  describe '#distance' do
+    subject { distance.distance }
 
     context 'with similar genomes' do
       it { is_expected.to be_positive }

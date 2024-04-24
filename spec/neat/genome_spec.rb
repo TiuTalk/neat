@@ -123,7 +123,7 @@ RSpec.describe Neat::Genome do
 
     it 'calls the Evaluator' do
       allow(Neat::Evaluator).to receive(:new).with(genome).and_return(evaluator)
-      expect(evaluator).to receive(:call).with([1, 2])
+      expect(evaluator).to receive(:evaluate).with([1, 2])
 
       genome.evaluate([1, 2])
     end
@@ -135,7 +135,7 @@ RSpec.describe Neat::Genome do
 
     it 'calls the Distance' do
       allow(Neat::Distance).to receive(:new).with(genome, other).and_return(distance)
-      expect(distance).to receive(:call)
+      expect(distance).to receive(:distance)
 
       genome.distance(other)
     end
@@ -147,7 +147,7 @@ RSpec.describe Neat::Genome do
 
     it 'calls the Crossover' do
       allow(Neat::Crossover).to receive(:new).with(genome, other).and_return(crossover)
-      expect(crossover).to receive(:call)
+      expect(crossover).to receive(:crossover)
 
       genome.crossover(other)
     end
@@ -158,7 +158,7 @@ RSpec.describe Neat::Genome do
 
     it 'calls the Mutator' do
       allow(Neat::Mutator).to receive(:new).with(genome).and_return(mutator)
-      expect(mutator).to receive(:call)
+      expect(mutator).to receive(:mutate)
 
       genome.mutate
     end

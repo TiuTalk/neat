@@ -10,11 +10,7 @@ module Neat
       @genome_b = genome_b
     end
 
-    def self.call(genome_a, genome_b)
-      new(genome_a, genome_b).call
-    end
-
-    def call
+    def distance
       distance = (c1 * excess_genes_count) / genes_count
       distance += (c2 * disjoint_genes_count) / genes_count
       distance += c3 * average_weight_difference

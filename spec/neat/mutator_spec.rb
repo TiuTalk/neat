@@ -6,18 +6,9 @@ RSpec.describe Neat::Mutator do
   let(:neat) { Neat::Neat.new(inputs: 2, outputs: 1) }
   let(:genome) { neat.create_genome }
 
-  describe '.call' do
-    it 'creates a new instance and calls it' do
-      mutator = instance_double(described_class)
+  describe '#mutate' do
+    subject(:mutate) { mutator.mutate }
 
-      allow(described_class).to receive(:new).with(genome).and_return(mutator)
-      expect(mutator).to receive(:call)
-
-      described_class.call(genome)
-    end
-  end
-
-  describe '#call' do
     before do
       allow(Neat.config).to receive_messages({
         mutation_add_node_probability: 0.0,
@@ -31,7 +22,7 @@ RSpec.describe Neat::Mutator do
 
       it 'calls #add_node' do
         expect(mutator).to receive(:add_node)
-        mutator.call
+        mutate
       end
     end
 
@@ -40,7 +31,7 @@ RSpec.describe Neat::Mutator do
 
       it 'calls #add_connection' do
         expect(mutator).to receive(:add_connection)
-        mutator.call
+        mutate
       end
     end
 
@@ -49,7 +40,7 @@ RSpec.describe Neat::Mutator do
 
       it 'calls #mutate_weights' do
         expect(mutator).to receive(:mutate_weights)
-        mutator.call
+        mutate
       end
     end
   end

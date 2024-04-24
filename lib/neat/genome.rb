@@ -59,19 +59,19 @@ module Neat
     end
 
     def evaluate(inputs)
-      Evaluator.new(self).call(inputs)
+      Evaluator.new(self).evaluate(inputs)
     end
 
     def distance(other)
-      Distance.new(self, other).call
+      Distance.new(self, other).distance
     end
 
     def crossover(other)
-      Crossover.new(self, other).call
+      Crossover.new(self, other).crossover
     end
 
     def mutate
-      Mutator.new(self).call
+      Mutator.new(self).mutate
     end
 
     private

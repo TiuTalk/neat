@@ -11,11 +11,7 @@ module Neat
       @genome_b = genome_b
     end
 
-    def self.call(genome_a, genome_b)
-      new(genome_a, genome_b).call
-    end
-
-    def call
+    def crossover
       @child = @genome_a.neat.create_genome(connected: false)
 
       add_matching_genes

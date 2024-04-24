@@ -8,11 +8,7 @@ module Neat
       @genome = genome
     end
 
-    def self.call(genome)
-      new(genome).call
-    end
-
-    def call
+    def mutate
       if rand < mutation_add_node_probability
         add_node
       elsif rand < mutation_add_connection_probability

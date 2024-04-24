@@ -9,19 +9,8 @@ RSpec.describe Neat::Crossover do
 
   let(:distance) { Neat::Distance.new(genome_a, genome_b) }
 
-  describe '.call' do
-    it 'creates a new instance and calls it' do
-      crossover = instance_double(described_class)
-
-      allow(described_class).to receive(:new).with(genome_a, genome_b).and_return(crossover)
-      expect(crossover).to receive(:call)
-
-      described_class.call(genome_a, genome_b)
-    end
-  end
-
-  describe '#call' do
-    subject(:child) { crossover.call }
+  describe '#crossover' do
+    subject(:child) { crossover.crossover }
 
     before do
       Neat::Mutator.new(genome_a).add_node

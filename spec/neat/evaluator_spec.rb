@@ -13,19 +13,8 @@ RSpec.describe Neat::Evaluator do
     genome.connections.each { _1.weight = 0.5 }
   end
 
-  describe '.call' do
-    it 'creates a new instance and calls it' do
-      evaluator = instance_double(described_class)
-
-      allow(described_class).to receive(:new).with(genome).and_return(evaluator)
-      expect(evaluator).to receive(:call).with(inputs)
-
-      described_class.call(genome, inputs)
-    end
-  end
-
-  describe '#call' do
-    subject(:outputs) { evaluator.call(inputs) }
+  describe '#evaluate' do
+    subject(:outputs) { evaluator.evaluate(inputs) }
 
     it 'evaluates the genome' do
       values = [(0.5 * inputs[0]), (0.5 * inputs[1]), (0.5 * 1.0)]

@@ -8,11 +8,7 @@ module Neat
       @genome = genome
     end
 
-    def self.call(genome, inputs)
-      new(genome).call(inputs)
-    end
-
-    def call(inputs)
+    def evaluate(inputs)
       # Reset the outputs
       @outputs = {}
 
