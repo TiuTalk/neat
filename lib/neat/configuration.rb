@@ -17,14 +17,14 @@ module Neat
     config :activation_function, ->(value) { 1.0 / (1.0 + Math.exp(-value)) }
 
     # Mutation parameters
-    config :mutation_add_node_probability, 0.03
-    config :mutation_add_connection_probability, 0.05
-    config :mutation_mutate_weights_probability, 0.8
-    config :mutation_randomize_weight_probability, 0.1
+    config :mutation_add_node_chance, 0.03
+    config :mutation_add_connection_chance, 0.05
+    config :mutation_mutate_weights_chance, 0.8
+    config :mutation_randomize_weight_chance, 0.1
     config :mutation_perturb_weight_range, (-0.2..0.2)
 
     # Crossover parameters
-    config :crossover_inherit_disabled_gene_probability, 0.75
+    config :crossover_inherit_disabled_gene_chance, 0.75
 
     # Distance parameters
     config :distance_excess_genes_coefficient, 1.0

@@ -58,7 +58,7 @@ module Neat
 
     extend Forwardable
     def_delegators :'Neat.config', :connection_weight_range, :mutation_perturb_weight_range,
-      :mutation_randomize_weight_probability
+      :mutation_randomize_weight_chance
 
     def random_weight
       rand(connection_weight_range)

@@ -48,16 +48,16 @@ RSpec.describe Neat::Crossover do
       end
     end
 
-    context 'when crossover_inherit_disabled_gene_probability is 100%' do
-      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_probability).and_return(1.0) }
+    context 'when crossover_inherit_disabled_gene_chance is 100%' do
+      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_chance).and_return(1.0) }
 
       it 'inherits the disabled gene' do
         expect(child.connections.first).to be_disabled
       end
     end
 
-    context 'when crossover_inherit_disabled_gene_probability is 0%' do
-      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_probability).and_return(0) }
+    context 'when crossover_inherit_disabled_gene_chance is 0%' do
+      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_chance).and_return(0) }
 
       it 'does not inherit the disabled gene' do
         expect(child.connections.first).to be_enabled

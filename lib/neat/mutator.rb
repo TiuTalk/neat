@@ -9,11 +9,11 @@ module Neat
     end
 
     def mutate
-      if rand < mutation_add_node_probability
+      if rand < mutation_add_node_chance
         add_node
-      elsif rand < mutation_add_connection_probability
+      elsif rand < mutation_add_connection_chance
         add_connection
-      elsif rand < mutation_mutate_weights_probability
+      elsif rand < mutation_mutate_weights_chance
         mutate_weights
       end
     end
@@ -49,7 +49,7 @@ module Neat
 
     def mutate_weights
       @genome.connections.each do |conn|
-        if rand < mutation_randomize_weight_probability
+        if rand < mutation_randomize_weight_chance
           conn.randomize_weight
         else
           conn.perturb_weight
@@ -60,8 +60,8 @@ module Neat
     private
 
     extend Forwardable
-    def_delegators :'Neat.config', :mutation_add_node_probability, :mutation_add_connection_probability,
-      :mutation_mutate_weights_probability, :mutation_randomize_weight_probability
+    def_delegators :'Neat.config', :mutation_add_node_chance, :mutation_add_connection_chance,
+      :mutation_mutate_weights_chance, :mutation_randomize_weight_chance
 
     def connection_candidates
       # Skip if the nodes are the same, the from node is in a higher layer, or the connection already exists

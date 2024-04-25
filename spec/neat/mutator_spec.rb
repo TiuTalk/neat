@@ -11,14 +11,14 @@ RSpec.describe Neat::Mutator do
 
     before do
       allow(Neat.config).to receive_messages({
-        mutation_add_node_probability: 0.0,
-        mutation_add_connection_probability: 0.0,
-        mutation_mutate_weights_probability: 0.0
+        mutation_add_node_chance: 0.0,
+        mutation_add_connection_chance: 0.0,
+        mutation_mutate_weights_chance: 0.0
       })
     end
 
-    context 'when mutation_add_node_probability is 100%' do
-      before { allow(Neat.config).to receive(:mutation_add_node_probability).and_return(1.0) }
+    context 'when mutation_add_node_chance is 100%' do
+      before { allow(Neat.config).to receive(:mutation_add_node_chance).and_return(1.0) }
 
       it 'calls #add_node' do
         expect(mutator).to receive(:add_node)
@@ -26,8 +26,8 @@ RSpec.describe Neat::Mutator do
       end
     end
 
-    context 'when mutation_add_connection_probability is 100%' do
-      before { allow(Neat.config).to receive(:mutation_add_connection_probability).and_return(1.0) }
+    context 'when mutation_add_connection_chance is 100%' do
+      before { allow(Neat.config).to receive(:mutation_add_connection_chance).and_return(1.0) }
 
       it 'calls #add_connection' do
         expect(mutator).to receive(:add_connection)
@@ -35,8 +35,8 @@ RSpec.describe Neat::Mutator do
       end
     end
 
-    context 'when mutation_mutate_weights_probability is 100%' do
-      before { allow(Neat.config).to receive(:mutation_mutate_weights_probability).and_return(1.0) }
+    context 'when mutation_mutate_weights_chance is 100%' do
+      before { allow(Neat.config).to receive(:mutation_mutate_weights_chance).and_return(1.0) }
 
       it 'calls #mutate_weights' do
         expect(mutator).to receive(:mutate_weights)
@@ -130,7 +130,7 @@ RSpec.describe Neat::Mutator do
     subject(:mutation) { mutator.mutate_weights }
 
     context 'when weights are randomized' do
-      before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(1.0) }
+      before { allow(Neat.config).to receive(:mutation_randomize_weight_chance).and_return(1.0) }
 
       it 'randomizes the weights of the connections' do
         sum = genome.connections.sum(&:weight)
@@ -148,7 +148,7 @@ RSpec.describe Neat::Mutator do
     end
 
     context 'when weights are perturbed' do
-      before { allow(Neat.config).to receive(:mutation_randomize_weight_probability).and_return(0) }
+      before { allow(Neat.config).to receive(:mutation_randomize_weight_chance).and_return(0) }
 
       it 'perturbs the weights of the connections' do
         weights_before = genome.connections.map(&:weight)
