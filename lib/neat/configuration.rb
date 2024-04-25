@@ -30,5 +30,6 @@ module Neat
     config :distance_excess_genes_coefficient, 1.0
     config :distance_disjoint_genes_coefficient, 1.0
     config :distance_weight_difference_coefficient, 0.4
+    config :species_compatibility_threshold, 3.0
   end
 end

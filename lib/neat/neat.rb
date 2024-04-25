@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'genome'
+require_relative 'species'
 
 module Neat
   class Neat
