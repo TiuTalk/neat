@@ -22,6 +22,11 @@ RSpec.describe Neat::Species do
       expect { species.add_genome(genome) }.to change(species.genomes, :count).by(1)
       expect(species.genomes).to include(genome)
     end
+
+    it 'updates the genome species' do
+      expect { species.add_genome(genome) }.to change(genome, :species)
+      expect(genome.species).to eq(species)
+    end
   end
 
   describe '#remove_genome' do

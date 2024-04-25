@@ -10,6 +10,7 @@ require_relative 'mutator'
 module Neat
   class Genome
     attr_reader :neat, :nodes, :connections
+    attr_accessor :species
 
     def initialize(neat:, connected: true)
       @neat = neat

@@ -2,6 +2,7 @@
 
 require_relative 'genome'
 require_relative 'species'
+require_relative 'population'
 
 module Neat
   class Neat

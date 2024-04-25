@@ -8,15 +8,20 @@ module Neat
       raise ArgumentError, 'representative must be a Genome' unless representative.is_a?(Genome)
 
       @representative = representative
-      @genomes = Set.new([representative])
+      @genomes = Set.new
+
+      add_genome(representative)
     end
 
     def add_genome(genome)
-      @genomes.add?(genome)
+      return unless @genomes.add?(genome)
+
+      genome.species = self
     end
 
     def remove_genome(genome)
       @genomes.delete(genome)
+      genome.species = nil
 
       # Select a new representative if the current one was removed
       @representative = @genomes.to_a.sample if genome == @representative
