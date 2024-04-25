@@ -16,6 +16,9 @@ RSpec.describe Neat::Crossover do
       Neat::Mutator.new(genome_a).add_node
       Neat::Mutator.new(genome_b).add_node
       Neat::Mutator.new(genome_a).add_node
+
+      # Disables a gene
+      genome_b.connections.first.enabled = false
     end
 
     it 'returns a new genome' do
@@ -42,6 +45,22 @@ RSpec.describe Neat::Crossover do
     it 'includes parent A excess genes' do
       distance.excess_a_genes.each do |conn|
         expect(child.connections).to include(have_attributes(from: conn.from, to: conn.to, weight: conn.weight))
+      end
+    end
+
+    context 'when crossover_inherit_disabled_gene_probability is 100%' do
+      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_probability).and_return(1.0) }
+
+      it 'inherits the disabled gene' do
+        expect(child.connections.first).to be_disabled
+      end
+    end
+
+    context 'when crossover_inherit_disabled_gene_probability is 0%' do
+      before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_probability).and_return(0) }
+
+      it 'does not inherit the disabled gene' do
+        expect(child.connections.first).to be_enabled
       end
     end
   end

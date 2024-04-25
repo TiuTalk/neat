@@ -23,6 +23,9 @@ module Neat
     config :mutation_randomize_weight_probability, 0.1
     config :mutation_perturb_weight_range, (-0.2..0.2)
 
+    # Crossover parameters
+    config :crossover_inherit_disabled_gene_probability, 0.75
+
     # Distance parameters
     config :distance_excess_genes_coefficient, 1.0
     config :distance_disjoint_genes_coefficient, 1.0

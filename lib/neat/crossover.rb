@@ -23,10 +23,14 @@ module Neat
 
     private
 
+    extend Forwardable
+    def_delegators :'Neat.config', :crossover_inherit_disabled_gene_probability
+
     def add_matching_genes
       distance.matching_genes.each do |conn_a, conn_b|
-        # TODO: Check for disabled connection
-        add_connection([conn_a, conn_b].sample)
+        disabled = (conn_a.disabled? || conn_b.disabled?) && rand < crossover_inherit_disabled_gene_probability
+
+        add_connection([conn_a, conn_b].sample, enabled: !disabled)
       end
     end
 
@@ -46,9 +50,11 @@ module Neat
       # Add the nodes
       args[:from] = add_node(conn.from)
       args[:to] = add_node(conn.to)
-      args[:weight] ||= conn.weight
 
       # Add the connection
+      args[:weight] ||= conn.weight
+      args[:enabled] = conn.enabled? unless args.key?(:enabled)
+
       @child.add_connection(**args)
     end
 

@@ -39,8 +39,9 @@ module Neat
 
     def add_connection(**args)
       @neat.add_connection(**args).tap do |conn|
-        # Force the connection weight if provided
-        conn.weight = args[:weight] if args[:weight]
+        # Force the connection weight & enabled if provided
+        conn.weight = args[:weight] if args.key?(:weight)
+        conn.enabled = args[:enabled] if args.key?(:enabled)
 
         @connections.add(conn)
       end
