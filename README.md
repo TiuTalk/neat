@@ -1,6 +1,7 @@
 # Neat
 
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TiuTalk/neat/build.yml?branch=master&logo=github)](https://github.com/TiuTalk/neat/actions)
+[![Codacy](https://img.shields.io/codacy/grade/28afdebeeab04172876c4419b1bd1b9b?logo=codacy)](https://app.codacy.com/gh/TiuTalk/neat/dashboard)
 
 TODO: Delete this and the text below, and describe your gem
 
