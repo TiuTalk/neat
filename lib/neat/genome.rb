@@ -67,8 +67,10 @@ module Neat
       Distance.new(self, other).distance
     end
 
-    def crossover(other)
-      Crossover.new(self, other).crossover
+    def crossover(other, mutate: false)
+      Crossover.new(self, other).crossover.tap do |offspring|
+        offspring.mutate if mutate
+      end
     end
 
     def mutate

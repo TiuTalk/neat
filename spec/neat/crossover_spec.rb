@@ -10,7 +10,7 @@ RSpec.describe Neat::Crossover do
   let(:distance) { Neat::Distance.new(genome_a, genome_b) }
 
   describe '#crossover' do
-    subject(:child) { crossover.crossover }
+    subject(:offspring) { crossover.crossover }
 
     before do
       Neat::Mutator.new(genome_a).add_node
@@ -22,29 +22,30 @@ RSpec.describe Neat::Crossover do
     end
 
     it 'returns a new genome' do
-      expect(child).to be_a(Neat::Genome)
-      expect(child.nodes.count).to eq(genome_a.nodes.count)
-      expect(child.connections.count).to eq(genome_a.connections.count)
-      expect(child).to_not eq(genome_a)
-      expect(child).to_not eq(genome_b)
+      expect(offspring).to be_a(Neat::Genome)
+      expect(offspring).to_not eq(genome_a)
+      expect(offspring).to_not eq(genome_b)
+
+      expect(offspring.nodes.count).to eq(genome_a.nodes.count)
+      expect(offspring.connections.count).to eq(genome_a.connections.count)
     end
 
     it 'includes both parents matching genes' do
       distance.matching_genes.each do |conn_a, conn_b|
-        conn = child.connections.find { _1.id == conn_a.id }
+        conn = offspring.connections.find { _1.id == conn_a.id }
         expect([conn_a.weight, conn_b.weight]).to include(conn.weight)
       end
     end
 
     it 'includes parent A disjoint genes' do
       distance.disjoint_a_genes.each do |conn|
-        expect(child.connections).to include(have_attributes(from: conn.from, to: conn.to, weight: conn.weight))
+        expect(offspring.connections).to include(have_attributes(from: conn.from, to: conn.to, weight: conn.weight))
       end
     end
 
     it 'includes parent A excess genes' do
       distance.excess_a_genes.each do |conn|
-        expect(child.connections).to include(have_attributes(from: conn.from, to: conn.to, weight: conn.weight))
+        expect(offspring.connections).to include(have_attributes(from: conn.from, to: conn.to, weight: conn.weight))
       end
     end
 
@@ -52,7 +53,7 @@ RSpec.describe Neat::Crossover do
       before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_chance).and_return(1.0) }
 
       it 'inherits the disabled gene' do
-        expect(child.connections.first).to be_disabled
+        expect(offspring.connections.first).to be_disabled
       end
     end
 
@@ -60,7 +61,7 @@ RSpec.describe Neat::Crossover do
       before { allow(Neat.config).to receive(:crossover_inherit_disabled_gene_chance).and_return(0) }
 
       it 'does not inherit the disabled gene' do
-        expect(child.connections.first).to be_enabled
+        expect(offspring.connections.first).to be_enabled
       end
     end
   end

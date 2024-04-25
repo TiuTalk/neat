@@ -143,13 +143,31 @@ RSpec.describe Neat::Genome do
 
   describe '#crossover' do
     let(:crossover) { instance_double(Neat::Crossover) }
-    let(:other) { neat.create_genome }
+    let(:other) { instance_double(described_class) }
+    let(:offspring) { instance_double(described_class) }
 
-    it 'calls the Crossover' do
+    before do
       allow(Neat::Crossover).to receive(:new).with(genome, other).and_return(crossover)
-      expect(crossover).to receive(:crossover)
+      allow(crossover).to receive(:crossover).and_return(offspring)
+    end
 
+    it 'calls the Crossover class' do
+      expect(crossover).to receive(:crossover)
       genome.crossover(other)
+    end
+
+    context 'when mutate param is true' do
+      it 'mutates the offspring' do
+        expect(offspring).to receive(:mutate)
+        genome.crossover(other, mutate: true)
+      end
+    end
+
+    context 'when mutate param is false' do
+      it 'does not mutate the offspring' do
+        expect(offspring).to_not receive(:mutate)
+        genome.crossover(other, mutate: false)
+      end
     end
   end
 
