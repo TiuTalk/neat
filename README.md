@@ -1,6 +1,6 @@
 # Neat
 
-[![CircleCI](https://img.shields.io/circleci/build/github/TiuTalk/neat/master?logo=circleci)](https://app.circleci.com/pipelines/github/TiuTalk/neat?branch=master)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TiuTalk/neat/build.yml?branch=master&logo=github)](https://github.com/TiuTalk/neat/actions)
 
 TODO: Delete this and the text below, and describe your gem
 
