@@ -13,6 +13,10 @@ module Neat
       add_genome(representative)
     end
 
+    def champion
+      @genomes.max_by(&:fitness)
+    end
+
     def fitness
       @genomes.sum(&:fitness)
     end

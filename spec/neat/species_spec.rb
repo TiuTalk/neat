@@ -17,6 +17,17 @@ RSpec.describe Neat::Species do
     end
   end
 
+  describe '#champion' do
+    before do
+      species.add_genome(genome)
+      species.genomes.each { _1.fitness = rand }
+    end
+
+    it 'returns the genome with the highest fitness' do
+      expect(species.champion).to eq(species.genomes.max_by(&:fitness))
+    end
+  end
+
   describe '#fitness' do
     subject { species.fitness }
 
