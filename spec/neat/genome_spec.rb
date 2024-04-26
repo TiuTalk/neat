@@ -67,6 +67,25 @@ RSpec.describe Neat::Genome do
     end
   end
 
+  describe '#adjusted_fitness' do
+    subject { genome.adjusted_fitness }
+
+    context 'with species' do
+      let(:species) { Neat::Species.new(representative: neat.create_genome) }
+
+      before do
+        species.add_genome(genome)
+        species.genomes.each { _1.fitness = rand }
+      end
+
+      it { is_expected.to eq(genome.fitness / species.genomes.count) }
+    end
+
+    context 'without species' do
+      it { is_expected.to be_zero }
+    end
+  end
+
   describe '#add_node' do
     it 'adds the Node' do
       expect do

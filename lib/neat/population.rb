@@ -12,6 +12,16 @@ module Neat
       @species = []
     end
 
+    def fitness
+      @genomes.sum(&:fitness)
+    end
+
+    def average_fitness
+      return 0 if @genomes.empty?
+
+      fitness / @genomes.size
+    end
+
     def evolve
       speciate
     end

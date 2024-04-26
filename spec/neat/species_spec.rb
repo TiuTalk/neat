@@ -17,6 +17,28 @@ RSpec.describe Neat::Species do
     end
   end
 
+  describe '#fitness' do
+    subject { species.fitness }
+
+    before do
+      species.add_genome(genome)
+      species.genomes.each { _1.fitness = rand }
+    end
+
+    it { is_expected.to eq(species.genomes.sum(&:fitness)) }
+  end
+
+  describe '#average_fitness' do
+    subject { species.average_fitness }
+
+    before do
+      species.add_genome(genome)
+      species.genomes.each { _1.fitness = rand }
+    end
+
+    it { is_expected.to eq(species.fitness / species.genomes.size) }
+  end
+
   describe '#add_genome' do
     it 'adds a genome to the species' do
       expect { species.add_genome(genome) }.to change(species.genomes, :count).by(1)

@@ -10,12 +10,13 @@ require_relative 'mutator'
 module Neat
   class Genome
     attr_reader :neat, :nodes, :connections
-    attr_accessor :species
+    attr_accessor :species, :fitness
 
     def initialize(neat:, connected: true)
       @neat = neat
       @nodes = Set.new
       @connections = Set.new
+      @fitness = 0.0
 
       initialize_nodes
       initialize_connections if connected
@@ -30,6 +31,12 @@ module Neat
 
     def connected?(from:, to:)
       @connections.any? { (_1.from == from && _1.to == to) || (_1.from == to && _1.to == from) }
+    end
+
+    def adjusted_fitness
+      return 0 if @species.nil? || @species.genomes.empty?
+
+      @fitness / @species.genomes.size
     end
 
     def add_node(**args)

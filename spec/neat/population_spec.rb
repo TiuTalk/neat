@@ -20,6 +20,22 @@ RSpec.describe Neat::Population do
     end
   end
 
+  describe '#fitness' do
+    subject { population.fitness }
+
+    before { population.genomes.each { _1.fitness = rand } }
+
+    it { is_expected.to eq(population.genomes.sum(&:fitness)) }
+  end
+
+  describe '#average_fitness' do
+    subject { population.average_fitness }
+
+    before { population.genomes.each { _1.fitness = rand } }
+
+    it { is_expected.to eq(population.fitness / population.genomes.size) }
+  end
+
   describe '#evolve' do
     it 'calls #speciate' do
       expect(population).to receive(:speciate).once

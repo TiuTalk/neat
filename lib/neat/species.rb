@@ -13,6 +13,16 @@ module Neat
       add_genome(representative)
     end
 
+    def fitness
+      @genomes.sum(&:fitness)
+    end
+
+    def average_fitness
+      return 0 if @genomes.empty?
+
+      fitness / @genomes.size
+    end
+
     def add_genome(genome)
       return unless @genomes.add?(genome)
 
