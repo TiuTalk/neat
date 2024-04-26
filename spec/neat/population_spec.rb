@@ -37,18 +37,43 @@ RSpec.describe Neat::Population do
   end
 
   describe '#evolve' do
+    subject(:evolve) { population.evolve }
+
     it 'calls #speciate' do
       expect(population).to receive(:speciate).once
-      population.evolve
+      evolve
+    end
+
+    it 'calls #kill' do
+      expect(population).to receive(:kill).once
+      evolve
+    end
+
+    it 'increments the generation' do
+      expect { evolve }.to change(population, :generation).by(1)
     end
   end
 
   describe '#speciate' do
+    subject(:speciate) { population.speciate }
+
     it 'splits genomes into species' do
-      expect { population.send(:speciate) }.to change(population.species, :size)
+      expect { speciate }.to change(population.species, :size)
 
       expect(population.species).to all(be_a(Neat::Species))
       expect(population.genomes).to all(have_attributes(species: an_instance_of(Neat::Species)))
+    end
+  end
+
+  describe '#kill' do
+    subject(:kill) { population.kill }
+
+    before { population.speciate }
+
+    it 'calls kill on each species' do
+      expect(population.species).to all(receive(:kill).once.ordered)
+
+      kill
     end
   end
 end

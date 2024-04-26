@@ -59,7 +59,24 @@ module Neat
       end
     end
 
+    def kill
+      # Don't kill the last genome
+      return if @genomes.size <= 1
+
+      survivors = (@genomes.size * survival_threshold).ceil
+      to_kill = @genomes.size - survivors
+
+      return if to_kill <= 0
+
+      @genomes.sort_by(&:fitness).take(to_kill).each do |genome|
+        # TODO: Implement a way to mark genomes as dead
+      end
+    end
+
     private
+
+    extend Forwardable
+    def_delegators :'Neat.config', :survival_threshold
 
     # TODO: Implement a better selection method
     def random_genome

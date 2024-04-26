@@ -2,7 +2,7 @@
 
 module Neat
   class Population
-    attr_reader :neat, :size, :genomes, :species
+    attr_reader :neat, :size, :genomes, :species, :generation
 
     def initialize(neat:, size:)
       @neat = neat
@@ -10,6 +10,8 @@ module Neat
 
       @genomes = Array.new(size) { @neat.create_genome }
       @species = []
+
+      @generation = 1
     end
 
     def fitness
@@ -24,6 +26,9 @@ module Neat
 
     def evolve
       speciate
+      kill
+
+      @generation += 1
     end
 
     # Split genomes into species
@@ -34,6 +39,11 @@ module Neat
         species = find_compatible_species(genome) || create_species(genome)
         species.add_genome(genome)
       end
+    end
+
+    # Kill off the weakest genomes of each species
+    def kill
+      @species.each(&:kill)
     end
 
     private
