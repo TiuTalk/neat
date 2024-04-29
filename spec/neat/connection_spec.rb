@@ -30,7 +30,7 @@ RSpec.describe Neat::Connection do
   describe '#to_s' do
     subject { conn.to_s }
 
-    it { is_expected.to eq("Connection##{conn.id} (#{from.id} -> #{to.id})") }
+    it { is_expected.to eq("Connection##{conn.id} (#{from.id} => #{to.id}) #{conn.weight}") }
   end
 
   describe '#==' do

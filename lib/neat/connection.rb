@@ -27,7 +27,7 @@ module Neat
     end
 
     def to_s
-      "Connection##{id} (#{from.id} -> #{to.id})"
+      "Connection##{id} (#{from.id} #{enabled? ? '=>' : '->'} #{to.id}) #{weight}"
     end
 
     def ==(other)
