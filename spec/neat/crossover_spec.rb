@@ -9,6 +9,11 @@ RSpec.describe Neat::Crossover do
 
   let(:distance) { Neat::Distance.new(genome_a, genome_b) }
 
+  before do
+    genome_a.fitness = 2.0
+    genome_b.fitness = 1.0
+  end
+
   describe '#crossover' do
     subject(:offspring) { crossover.crossover }
 

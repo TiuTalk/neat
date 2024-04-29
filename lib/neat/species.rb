@@ -78,9 +78,15 @@ module Neat
     extend Forwardable
     def_delegators :'Neat.config', :survival_threshold
 
-    # TODO: Implement a better selection method
+    # Selects a random genome using weighted fitness
     def random_genome
-      @genomes.to_a.sample
+      threshold = fitness * rand
+
+      @genomes.to_a.shuffle.each do |genome|
+        threshold -= genome.fitness
+
+        return genome if threshold <= 0
+      end
     end
 
     extend Forwardable
