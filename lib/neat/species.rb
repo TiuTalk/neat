@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require_relative 'weighted_random'
+
 module Neat
   class Species
+    include WeightedRandom
+
     attr_reader :representative, :genomes
 
     def initialize(representative:)
@@ -11,6 +15,10 @@ module Neat
       @genomes = Set.new
 
       add_genome(representative)
+    end
+
+    def size
+      @genomes.size
     end
 
     def champion
@@ -54,23 +62,28 @@ module Neat
       parent_b = random_genome
 
       # Create a new genome by crossing over the parents
-      parent_a.crossover(parent_b, mutate:).tap do |child|
-        add_genome(child)
-      end
+      parent_a.crossover(parent_b, mutate:)
     end
 
-    def kill
-      # Don't kill the last genome
-      return if @genomes.size <= 1
+    def reset
+      # Select a random new representative
+      @repesentative = @genomes.to_a.sample
 
-      survivors = (@genomes.size * survival_threshold).ceil
-      to_kill = @genomes.size - survivors
+      @genomes.each { _1.species = nil }
+      @genomes.clear
 
-      return if to_kill <= 0
+      add_genome(@representative)
+    end
 
-      @genomes.sort_by(&:fitness).take(to_kill).each do |genome|
-        # TODO: Implement a way to mark genomes as dead
-      end
+    def prune(population_fitness)
+      return if fitness.zero? || population_fitness.zero?
+
+      survivors = ((fitness / population_fitness * size) * survival_threshold).ceil
+      to_prune = size - survivors
+
+      return if to_prune <= 0
+
+      @genomes.sort_by(&:fitness).first(to_prune).each { remove_genome(_1) }
     end
 
     private
@@ -80,13 +93,7 @@ module Neat
 
     # Selects a random genome using weighted fitness
     def random_genome
-      threshold = fitness * rand
-
-      @genomes.to_a.shuffle.each do |genome|
-        threshold -= genome.fitness
-
-        return genome if threshold <= 0
-      end
+      choose(@genomes.to_a, :fitness)
     end
 
     extend Forwardable

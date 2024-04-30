@@ -44,11 +44,6 @@ RSpec.describe Neat::Population do
       evolve
     end
 
-    it 'calls #kill' do
-      expect(population).to receive(:kill).once
-      evolve
-    end
-
     it 'increments the generation' do
       expect { evolve }.to change(population, :generation).by(1)
     end
@@ -62,18 +57,6 @@ RSpec.describe Neat::Population do
 
       expect(population.species).to all(be_a(Neat::Species))
       expect(population.genomes).to all(have_attributes(species: an_instance_of(Neat::Species)))
-    end
-  end
-
-  describe '#kill' do
-    subject(:kill) { population.kill }
-
-    before { population.speciate }
-
-    it 'calls kill on each species' do
-      expect(population.species).to all(receive(:kill).once.ordered)
-
-      kill
     end
   end
 end

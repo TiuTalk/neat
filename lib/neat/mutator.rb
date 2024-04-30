@@ -20,6 +20,9 @@ module Neat
 
     def add_node
       conn = @genome.connections.filter(&:enabled?).to_a.sample
+
+      return if conn.nil?
+
       node = @genome.add_node(layer: conn.from.layer + 1)
 
       # Create the new connections

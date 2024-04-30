@@ -11,7 +11,7 @@ module Neat
     end
 
     # Network parameters
-    config :connection_weight_range, (-2.0..2.0)
+    config :connection_weight_range, (-1.0..1.0)
 
     # Activation function
     config :activation_function, ->(value) { 1.0 / (1.0 + Math.exp(-value)) }
@@ -33,6 +33,7 @@ module Neat
     config :species_compatibility_threshold, 3.0
 
     # Evolution parameters
+    config :target_species, 5
     config :survival_threshold, 0.2
   end
 end
